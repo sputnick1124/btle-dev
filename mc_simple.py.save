@@ -1,0 +1,44 @@
+import serial, time
+import RPi.GPIO as gpio
+
+def readline(ble):
+	ret = ''
+	while '\r\n' not in ret:
+		t1 = time.time()
+		ret += ble.read()
+		t2 = time.time()
+		if t2-t1 > 0.5:
+			break
+	return ret.strip()
+
+gpio.setmode(gpio.BOARD)
+
+RTS = 36
+CTS = 38
+SW = 35
+HW = 37
+MLDP = 33
+
+out_pins = [HW,SW,RTS,MLDP]
+in_pins = [CTS]
+for pin in out_pins:
+	gpio.setup(pin,gpio.OUT)
+for pin in in_pins:
+	gpio.setup(pin,gpio.IN)
+
+for pin in [HW,MLDP]:
+	gpio.output(pin,gpio.LOW)
+gpio.output(SW,gpio.HIGH)
+
+ble = serial.Serial('/dev/ttyAMA0',baudrate = 115200,timeout = 1)
+time.sleep(1)
+print readline(ble)
+ble.write('SR,20000000\n')
+print readline(ble)
+print readline(ble)
+ble.write('R,1\n')
+time.sleep(0.5)
+print readline(ble)
+print readline(ble)
+ble.write('A\n')
+print readline(ble)
