@@ -3,21 +3,21 @@ import RPi.GPIO as gpio
 
 gpio.setmode(gpio.BOARD)
 
-RTS = 36
-CTS = 38
+RTS = 29
+CTS = 31
 SW = 35
 HW = 37
 MLDP = 33
 
-out_pins = [HW,SW,RTS,MLDP]
-in_pins = [CTS]
+out_pins = [HW,SW,MLDP]
+FC_pins = [CTS,RTS]
 for pin in out_pins:
-	gpio.setup(pin,gpio.OUT)
-for pin in in_pins:
-	gpio.setup(pin,gpio.IN)
+	pi.set_mode(pin,pi.OUTPUT)
+for pin in FC_pins:
+	pi.set_mode(pin,pi.ALT3)
 
-gpio.output(MLDP,1)
-gpio.output(SW,1)
+pi.write(MLDP,1)
+pi.write(SW,1)
 
 ble = serial.Serial('/dev/ttyAMA0',baudrate = 921600,timeout = 0.1)
 time.sleep(1)
