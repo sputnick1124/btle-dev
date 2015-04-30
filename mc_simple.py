@@ -1,13 +1,11 @@
 import serial, time
 import RPi.GPIO as gpio
 
-gpio.setmode(gpio.BOARD)
-
-RTS = 29
-CTS = 31
-SW = 35
-HW = 37
-MLDP = 33
+RTS = 17
+CTS = 16
+SW = 19
+HW = 26
+MLDP = 13
 
 out_pins = [HW,SW,MLDP]
 FC_pins = [CTS,RTS]
